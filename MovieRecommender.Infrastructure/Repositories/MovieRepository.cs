@@ -1,4 +1,5 @@
-﻿using MovieRecommender.Core.Dto;
+﻿using Microsoft.EntityFrameworkCore;
+using MovieRecommender.Core.Dto;
 using MovieRecommender.Core.Entities;
 using MovieRecommender.Core.Interfaces;
 using System.Collections.Generic;
@@ -28,11 +29,14 @@ namespace MovieRecommender.Infrastructure.Repositories
 
         public Dictionary<int, string> GetMovieIdToTileDictionary(int[] movieIds)
         {
-            return
-                _dbSet
-                    .Where(m => movieIds.Contains(m.Id))
-                    .Select(m => new { m.Id, m.Title })
-                    .ToDictionary(k => k.Id, v => v.Title);
+            if (movieIds == null || movieIds.Length == 0)
+                return new Dictionary<int, string>();
+
+            return _dbSet
+                .Where(m => movieIds.AsQueryable().Contains(m.Id))
+                .Select(m => new { m.Id, m.Title })
+                .ToDictionary(k => k.Id, v => v.Title);
         }
+
     }
 }
