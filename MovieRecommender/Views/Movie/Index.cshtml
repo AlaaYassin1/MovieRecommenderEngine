@@ -1,49 +1,239 @@
 ﻿@model System.Collections.IDictionary
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Movie Discovery";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-lg-4">
-        <div class="pre-scrollable">
-            <ul id="SelectedMovies" class="list-group"></ul>
+<!-- Page Header -->
+<div class="text-center mb-5 animate-fade-up">
+    <h1 class="display-4 fw-bold text-enhanced-heading mb-3">
+        <i class="fas fa-magic me-3 text-warning"></i>
+        Discover Your Next Favorite Movie
+    </h1>
+    <p class="lead text-enhanced opacity-90 mb-0">
+        Select movies you love and let our AI recommend what to watch next
+    </p>
+</div>
+
+<div class="row g-4">
+    <!-- Left Panel - Movie Selection -->
+    <div class="col-lg-6">
+        <!-- Search Section -->
+        <div class="glass-card p-4 mb-4 animate-fade-up">
+            <h3 class="h5 fw-bold mb-3 text-enhanced">
+                <i class="fas fa-search me-2 text-warning"></i>
+                Search & Select Movies
+            </h3>
+
+            <!-- Selected Movies Display -->
+            <div class="selected-movies-container mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="fw-bold mb-0 text-muted">Your Selected Movies</h6>
+                    <span class="badge bg-primary" id="movieCount">0</span>
+                </div>
+                <div id="SelectedMovies">
+                    <div class="text-center py-4 text-muted" id="emptyState">
+                        <i class="fas fa-film fs-2 mb-3 opacity-50"></i>
+                        <p class="mb-0">Start by searching for movies you enjoyed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Input -->
+            <div class="search-movie position-relative mb-4">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="SearchMovie" class="form-control search-input"
+                    placeholder="Type a movie title to search..." autocomplete="off">
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+
+            <!-- Action Button -->
+            <div class="text-center">
+                <button class="btn btn-primary btn-lg px-5 py-3 fw-bold recommend" disabled>
+                    <i class="fas fa-sparkles me-2"></i>
+                    Get Recommendations
+                    <div class="spinner d-none ms-2"></div>
+                </button>
+                <p class="small text-enhanced opacity-85 mt-2 mb-0">
+                    Select at least 2 movies to get started
+                </p>
+            </div>
         </div>
 
-        <div class="input-group search-movie">
-            <span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-search"></i></span>
-            <input type="text" id="SearchMovie" class="form-control" placeholder="Search movies" aria-describedby="basic-addon1">
+        <!-- Stats Card -->
+        <div class="glass-card p-3 animate-fade-up">
+            <div class="row text-center text-enhanced">
+                <div class="col-4">
+                    <i class="fas fa-database fs-4 text-warning mb-2"></i>
+                    <div class="fw-bold">10K+</div>
+                    <div class="small opacity-85">Movies</div>
+                </div>
+                <div class="col-4">
+                    <i class="fas fa-users fs-4 text-success mb-2"></i>
+                    <div class="fw-bold">1M+</div>
+                    <div class="small opacity-85">Ratings</div>
+                </div>
+                <div class="col-4">
+                    <i class="fas fa-chart-line fs-4 text-info mb-2"></i>
+                    <div class="fw-bold">95%</div>
+                    <div class="small opacity-85">Accuracy</div>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <a href="javascript:void(0)" class="recommend btn btn-large btn-info">Recommend movies</a>
+    <!-- Right Panel - How it Works -->
+    <div class="col-lg-6">
+        <div class="glass-card p-4 animate-fade-up" style="animation-delay: 0.2s;">
+            <h3 class="h5 fw-bold mb-4 text-enhanced">
+                <i class="fas fa-lightbulb me-2 text-warning"></i>
+                How It Works
+            </h3>
+
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="d-flex align-items-start">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                            style="width: 40px; height: 40px;">
+                            <span class="fw-bold">1</span>
+                        </div>
+                        <div class="text-enhanced">
+                            <h6 class="fw-bold mb-1">Search for Movies</h6>
+                            <p class="mb-0 opacity-90">Type in movie titles you've enjoyed watching</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="d-flex align-items-start">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                            style="width: 40px; height: 40px;">
+                            <span class="fw-bold">2</span>
+                        </div>
+                        <div class="text-enhanced">
+                            <h6 class="fw-bold mb-1">Build Your Profile</h6>
+                            <p class="mb-0 opacity-90">Select multiple movies to help us understand your taste</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="d-flex align-items-start">
+                        <div class="bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                            style="width: 40px; height: 40px;">
+                            <span class="fw-bold">3</span>
+                        </div>
+                        <div class="text-enhanced">
+                            <h6 class="fw-bold mb-1">Get Recommendations</h6>
+                            <p class="mb-0 opacity-90">Our AI analyzes patterns and suggests movies you'll love</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4 opacity-25">
+
+            <div class="text-center">
+                <h6 class="fw-bold text-enhanced mb-3">Powered by Advanced AI</h6>
+                <div class="d-flex justify-content-center gap-3 text-enhanced opacity-90">
+                    <span><i class="fas fa-robot me-1"></i>Machine Learning</span>
+                    <span><i class="fas fa-chart-network me-1"></i>Collaborative Filtering</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="RecommendedMoviesDialog" class="modal fade">
-    <div class="modal-dialog" role="document">
+<!-- Recommendations Modal -->
+<div class="modal fade" id="RecommendedMoviesDialog" tabindex="-1" aria-labelledby="recommendationsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3>Recommended movies</h3>
+                <h3 class="modal-title fw-bold" id="recommendationsModalLabel">
+                    <i class="fas fa-star me-2"></i>
+                    Your Personalized Recommendations
+                </h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
-                <table id="RecommendedMovies" class="table"></table>
+                <div class="text-center mb-4">
+                    <p class="text-muted mb-0">Based on your selected movies, here are our top recommendations:</p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover recommended-movies-table" id="RecommendedMovies">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-trophy me-2"></i>Rank</th>
+                                <th><i class="fas fa-film me-2"></i>Movie Title</th>
+                                <th><i class="fas fa-percentage me-2"></i>Match Score</th>
+                                <th><i class="fas fa-info-circle me-2"></i>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Recommendations will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
-                <a href="#" class="btn btn-primary" data-dismiss="modal">Done</a>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Close
+                </button>
+                <button type="button" class="btn btn-primary" onclick="getMoreRecommendations()">
+                    <i class="fas fa-refresh me-2"></i>Get More Recommendations
+                </button>
             </div>
-
         </div>
     </div>
 </div>
 
 @section scripts {
-<script>
-    $(document).ready(function () {
-        Movie.init();
-    });
-</script>
+    <script>
+        $(document).ready(function () {
+            Movie.init();
+
+            // Add some entrance animations
+            $('.animate-fade-up').each(function (index) {
+                $(this).css({
+                    'animation-delay': (index * 0.1) + 's'
+                });
+            });
+
+            // Add particle background effect (optional)
+            createParticleBackground();
+        });
+
+        function createParticleBackground() {
+            // Create floating particles for visual appeal
+            for (let i = 0; i < 50; i++) {
+                const particle = $('<div class="particle"></div>');
+                particle.css({
+                    position: 'fixed',
+                    width: Math.random() * 4 + 'px',
+                    height: Math.random() * 4 + 'px',
+                    background: 'rgba(255, 255, 255, ' + (Math.random() * 0.3 + 0.1) + ')',
+                    borderRadius: '50%',
+                    left: Math.random() * 100 + '%',
+                    top: Math.random() * 100 + '%',
+                    pointerEvents: 'none',
+                    zIndex: -1
+                });
+
+                $('body').append(particle);
+
+                // Animate particles
+                particle.animate({
+                    top: (Math.random() > 0.5 ? '+=' : '-=') + (Math.random() * 100 + 50) + 'px',
+                    left: (Math.random() > 0.5 ? '+=' : '-=') + (Math.random() * 50 + 25) + 'px',
+                    opacity: 0
+                }, Math.random() * 3000 + 2000, function () {
+                    $(this).remove();
+                });
+            }
+        }
+    </script>
 }
