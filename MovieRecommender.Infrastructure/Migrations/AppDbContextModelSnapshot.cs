@@ -33,7 +33,7 @@ namespace MovieRecommender.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("MovieRecommender.Core.Entities.Movie", b =>
@@ -52,7 +52,7 @@ namespace MovieRecommender.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("MovieRecommender.Core.Entities.MovieGenre", b =>
@@ -67,7 +67,7 @@ namespace MovieRecommender.Infrastructure.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("MovieGenres");
+                    b.ToTable("MovieGenres", (string)null);
                 });
 
             modelBuilder.Entity("MovieRecommender.Core.Entities.MovieRating", b =>
@@ -85,7 +85,7 @@ namespace MovieRecommender.Infrastructure.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("MovieRatings");
+                    b.ToTable("MovieRatings", (string)null);
                 });
 
             modelBuilder.Entity("MovieRecommender.Core.Entities.MovieGenre", b =>
